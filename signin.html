@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — Wahussein</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Apply theme before paint to prevent flash
+    (function() {
+      var saved = localStorage.getItem('theme');
+      var theme = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar__container">
+      <a href="/" id="navbar__logo">Wahussein</a>
+      <div class="navbar__toggle" id="mobile-menu" aria-label="Toggle menu" role="button" tabindex="0">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+      <ul class="navbar__menu" id="navbar__menu">
+        <li class="navbar__item"><a href="/#home" class="navbar__links">Home</a></li>
+        <li class="navbar__item"><a href="/#about" class="navbar__links">About</a></li>
+        <li class="navbar__item"><a href="/#projects" class="navbar__links">Projects</a></li>
+        <li class="navbar__item"><a href="tech.html" class="navbar__links">Tech</a></li>
+        <li class="navbar__item"><a href="/#services" class="navbar__links">Services</a></li>
+        <li class="navbar__item"><a href="/#contact" class="navbar__links navbar__links--cta">Contact</a></li>
+        <li class="navbar__item">
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+            <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </button>
+        </li>
+        <li class="navbar__item" id="nav-auth-signin" style="display:none">
+          <a href="signin.html" class="navbar__links">Sign In</a>
+        </li>
+        <li class="navbar__item nav-auth" id="nav-auth-user" style="display:none">
+          <span class="nav-auth__email" id="nav-user-email"></span>
+          <button class="btn--ghost" id="nav-logout-btn">Logout</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- SIGN IN FORM -->
+  <main class="auth-page">
+    <div class="auth-card">
+      <h1 class="auth-card__title">Welcome back</h1>
+      <p class="auth-card__subtitle">Sign in to your Wahussein account</p>
+
+      <div class="auth__error" id="auth-error"></div>
+
+      <form id="signin-form" novalidate>
+        <div class="form__group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email">
+        </div>
+        <div class="form__group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn--primary btn--full">Sign In</button>
+      </form>
+
+      <p class="auth-card__switch">Don't have an account? <a href="signup.html">Sign up</a></p>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script>
+    // Redirect if already signed in
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) window.location.href = '/';
+    });
+
+    function friendlyError(code) {
+      const map = {
+        'auth/user-not-found':    'No account found with that email.',
+        'auth/wrong-password':    'Incorrect password.',
+        'auth/invalid-credential':'Incorrect email or password.',
+        'auth/invalid-email':     'Please enter a valid email address.',
+        'auth/too-many-requests': 'Too many attempts. Please try again later.',
+      };
+      return map[code] || 'Something went wrong. Please try again.';
+    }
+
+    document.getElementById('signin-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const errorEl  = document.getElementById('auth-error');
+      const btn      = e.target.querySelector('button[type="submit"]');
+
+      btn.disabled = true;
+      btn.textContent = 'Signing in…';
+      errorEl.classList.remove('visible');
+
+      try {
+        await firebase.auth().signInWithEmailAndPassword(email, password);
+        window.location.href = '/';
+      } catch (err) {
+        errorEl.textContent = friendlyError(err.code);
+        errorEl.classList.add('visible');
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
+    });
+  </script>
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
