@@ -1,14 +1,15 @@
-// ============================================================
-// Replace these values with your Firebase project config.
-// Firebase Console â†’ Project Settings â†’ Your Apps â†’ Web App
-// ============================================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import {getAuth} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+  // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey: "AIzaSyCXGTgjr1Dkpy9gGtXaVoFdlIOQ2_VmKkk",
+  authDomain: "mooncity-eb09d.firebaseapp.com",
+  projectId: "mooncity-eb09d",
+  storageBucket: "mooncity-eb09d.firebasestorage.app",
+  messagingSenderId: "757174968612",
+  appId: "1:757174968612:web:92cdf98466aca9a61c53b1"
 };
 
-firebase.initializeApp(firebaseConfig);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app)
