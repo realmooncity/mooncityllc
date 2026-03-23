@@ -73,12 +73,12 @@
     </div>
   </main>
 
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-  <script src="firebase-config.js"></script>
-  <script>
+  <script type="module">
+    import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+    import { auth } from "./firebase-config.js";
+
     // Redirect if already signed in
-    firebase.auth().onAuthStateChanged((user) => {
+    onAuthStateChanged(auth, (user) => {
       if (user) window.location.href = '/';
     });
 
@@ -105,7 +105,7 @@
       errorEl.classList.remove('visible');
 
       try {
-        await firebase.auth().signInWithEmailAndPassword(email, password);
+        await signInWithEmailAndPassword(auth, email, password);
         window.location.href = '/';
       } catch (err) {
         errorEl.textContent = friendlyError(err.code);
@@ -115,7 +115,7 @@
       }
     });
   </script>
-  <script src="auth.js"></script>
+  <script type="module" src="auth.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

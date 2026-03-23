@@ -7,7 +7,7 @@ const firebaseConfig = {
   projectId: "mooncity-eb09d",
   storageBucket: "mooncity-eb09d.firebasestorage.app",
   messagingSenderId: "757174968612",
-  appId: "1:757174968612:web:92cdf98466aca9a61c53b1"
+  appId: "1:757174968612:web:0d5e7803fb9ce7211c53b1"
 };
 
 // Initialize Firebase

@@ -1,9 +1,9 @@
 // ===== AUTH STATE MANAGER =====
 // Runs on every page to sync navbar auth items and service buttons.
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import { auth } from "./firebase-config.js";
 
-const auth = firebase.auth();
-
-auth.onAuthStateChanged((user) => {
+onAuthStateChanged(auth, (user) => {
   const signinItem = document.getElementById('nav-auth-signin');
   const userItem   = document.getElementById('nav-auth-user');
   const userEmail  = document.getElementById('nav-user-email');
@@ -24,7 +24,7 @@ auth.onAuthStateChanged((user) => {
 // Logout button (present on all pages via navbar)
 const logoutBtn = document.getElementById('nav-logout-btn');
 if (logoutBtn) {
-  logoutBtn.addEventListener('click', () => auth.signOut());
+  logoutBtn.addEventListener('click', () => signOut(auth));
 }
 
 function prefillContactForm(user) {
