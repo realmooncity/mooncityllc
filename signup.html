@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up — Wahussein</title>
+  <title>Sign Up — Moon City LLC</title>
   <link rel="stylesheet" href="style.css">
   <script>
     // Apply theme before paint to prevent flash
@@ -19,7 +19,7 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar__container">
-      <a href="/" id="navbar__logo">Wahussein</a>
+      <a href="/" id="navbar__logo">Moon City LLC</a>
       <div class="navbar__toggle" id="mobile-menu" aria-label="Toggle menu" role="button" tabindex="0">
         <span class="bar"></span>
         <span class="bar"></span>
@@ -116,7 +116,7 @@
       btn.textContent = 'Creating account…';
 
       try {
-        await firebase.auth().createUserWithEmailAndPassword(email, password);
+        await createUserWithEmailAndPassword(auth, email.value, password.value);
         window.location.href = '/';
       } catch (err) {
         errorEl.textContent = friendlyError(err.code);
